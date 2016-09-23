@@ -1,0 +1,91 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace ConsoleApplication28
+{
+    class GRAPH
+    {
+        int V=4;
+        public bool isSafe(int v, bool[,] graph, int[] color, int c)
+        {
+            ////graph = new bool[v, v];
+            for (int i = 0; i < V; i++)
+                if (graph[v, i] && c == color[i])
+                {
+                    return false;
+                }
+            return true;
+
+        }
+        public bool graphColoringUtil(bool[,] graph, int m, int[] color, int v)
+        {
+            if (v==V)
+            {
+                return true;
+            }
+               
+    for (int c = 1; c <= m; c++)
+    {
+        
+        if (isSafe(v, graph, color, c))
+        {
+           color[v] = c;
+        
+ 
+           
+           if (graphColoringUtil (graph, m, color, v+1) == true)
+           {
+             return true;
+           }
+ 
+           color[v] = 0;
+        }
+    }
+    return false;
+}
+        public bool graphColoring(bool[,] graph, int m)
+    {
+        //int* color = new int[V];
+        int[] color = new int[V];
+        for (int i = 0; i < V; i++)
+        {
+            color[i] = 0;
+            if (graphColoringUtil(graph, m, color, 0) == false)
+            {
+                Console.WriteLine("Solution does not exist");
+                return false;
+            }
+            else
+            {
+                printSolution(color);
+                return true;
+            }
+        }
+        return true;
+    }
+    public void printSolution(int[] color)
+    {
+        Console.WriteLine("Solution Exists:    Following are the assigned colors \n");
+        for (int i = 0; i < V; i++)
+        {
+            Console.WriteLine(color[i]);
+        }
+    }
+    }
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            bool[,] graph = 
+       {{false, true, true, true},
+        {true, false, true, false},
+        {true, true, false, true},
+        {true, false, true, false}};
+            int m = 3;
+            GRAPH g = new GRAPH();
+            g.graphColoring(graph, m);
+        }
+    }
+}
